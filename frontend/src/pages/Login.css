@@ -1,0 +1,655 @@
+/* =========================================================
+   OCEAN-X LOGIN
+   ========================================================= */
+
+.login-page {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+
+    overflow: hidden;
+
+    background: #020a10;
+
+    color: #e7f3f8;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+}
+
+
+/* =========================================================
+   LEFT — GLOBE
+   ========================================================= */
+
+.login-globe-section {
+    position: relative;
+
+    width: 55%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #000;
+
+    border-right: 1px solid rgba(70, 170, 205, 0.18);
+}
+
+.login-globe-section .cesium-viewer {
+    width: 100%;
+    height: 100%;
+}
+
+.login-globe-section canvas {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================================
+   GLOBE BRAND
+   ========================================================= */
+
+.globe-brand {
+    position: absolute;
+
+    left: 42px;
+    bottom: 34px;
+
+    z-index: 20;
+
+    pointer-events: none;
+}
+
+.globe-brand-title {
+    font-size: 27px;
+
+    font-weight: 700;
+
+    letter-spacing: 6px;
+
+    color: #f0f7fa;
+}
+
+.globe-brand-subtitle {
+    margin-top: 7px;
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+    letter-spacing: 3px;
+
+    color: #36c8ef;
+}
+
+
+/* =========================================================
+   GLOBE STATUS
+   ========================================================= */
+
+.globe-status {
+    position: absolute;
+
+    top: 24px;
+    left: 30px;
+
+    z-index: 20;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    color: rgba(190, 225, 235, 0.65);
+
+    pointer-events: none;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #20c9ef;
+
+    box-shadow:
+        0 0 8px rgba(32, 201, 239, 0.8);
+}
+
+
+/* =========================================================
+   RIGHT PANEL
+   ========================================================= */
+
+.login-panel-section {
+    width: 45%;
+    height: 100%;
+
+    position: relative;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    background:
+        linear-gradient(
+            rgba(10, 38, 51, 0.16) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(10, 38, 51, 0.16) 1px,
+            transparent 1px
+        ),
+        #041721;
+
+    background-size: 46px 46px;
+}
+
+
+/* subtle dark edge */
+
+.login-panel-section::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.22),
+            transparent 18%
+        );
+}
+
+
+/* =========================================================
+   PANEL
+   ========================================================= */
+
+.login-panel {
+    position: relative;
+
+    width: min(620px, calc(100% - 100px));
+
+    min-height: 100%;
+
+    margin: 0 auto;
+
+    padding-top: 50px;
+
+    padding-bottom: 35px;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   WELCOME
+   ========================================================= */
+
+.login-heading {
+    margin-bottom: 45px;
+}
+
+.login-heading h2 {
+    margin: 0;
+
+    font-size: clamp(30px, 3vw, 42px);
+
+    font-weight: 500;
+
+    letter-spacing: -1.2px;
+
+    color: #eef7fa;
+}
+
+.login-heading p {
+    margin: 12px 0 0;
+
+    font-size: 13px;
+
+    color: #638b99;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ROLE SECTION
+   ========================================================= */
+
+.role-section {
+    width: 100%;
+}
+
+.section-label {
+    margin-bottom: 13px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    color: #28b8dd;
+}
+
+
+/* =========================================================
+   ROLE CARDS
+   ========================================================= */
+
+.role-card {
+    width: 100%;
+
+    min-height: 94px;
+
+    margin-bottom: 12px;
+
+    padding: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    text-align: left;
+
+    border: 1px solid rgba(54, 142, 166, 0.28);
+
+    border-radius: 8px;
+
+    background: rgba(7, 31, 42, 0.52);
+
+    color: #e5f1f5;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.18s ease,
+        background 0.18s ease,
+        transform 0.18s ease;
+}
+
+.role-card:hover {
+    border-color: rgba(32, 194, 231, 0.65);
+
+    background: rgba(10, 42, 55, 0.72);
+
+    transform: translateX(2px);
+}
+
+.role-card.selected {
+    border-color: #16b9df;
+
+    background: rgba(8, 48, 62, 0.75);
+
+    box-shadow:
+        inset 3px 0 0 #16b9df;
+}
+
+
+/* =========================================================
+   ROLE ICON
+   ========================================================= */
+
+.role-icon {
+    width: 44px;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid rgba(38, 158, 187, 0.35);
+
+    border-radius: 7px;
+
+    background: rgba(12, 52, 66, 0.6);
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   ROLE TEXT
+   ========================================================= */
+
+.role-content {
+    margin-left: 18px;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.role-content strong {
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #e5f1f5;
+}
+
+.role-content span {
+    margin-top: 5px;
+
+    font-size: 10px;
+
+    color: #648d9c;
+}
+
+.role-content small {
+    margin-top: 5px;
+
+    font-size: 7px;
+
+    font-weight: 600;
+
+    letter-spacing: 1.5px;
+
+    color: #2589a5;
+}
+
+
+/* =========================================================
+   ARROW
+   ========================================================= */
+
+.role-arrow {
+    margin-left: auto;
+
+    padding-left: 20px;
+
+    font-size: 19px;
+
+    font-weight: 300;
+
+    color: #20b9df;
+
+    transition: transform 0.18s ease;
+}
+
+.role-card:hover .role-arrow {
+    transform: translateX(4px);
+}
+
+
+/* =========================================================
+   LOGIN FORM
+   ========================================================= */
+
+.login-form {
+    margin-top: 28px;
+
+    padding-top: 25px;
+
+    border-top: 1px solid rgba(50, 144, 170, 0.2);
+}
+
+.form-header {
+    margin-bottom: 20px;
+
+    font-size: 8px;
+
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    color: #28b8dd;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.input-group {
+    margin-bottom: 17px;
+}
+
+.input-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+    color: #7ea2af;
+}
+
+.input-group input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    height: 43px;
+
+    padding: 0 13px;
+
+    border: 1px solid rgba(56, 135, 157, 0.3);
+
+    border-radius: 6px;
+
+    outline: none;
+
+    background: rgba(2, 17, 24, 0.65);
+
+    color: #e8f4f7;
+
+    font-size: 12px;
+
+    transition:
+        border-color 0.18s ease,
+        background 0.18s ease;
+}
+
+.input-group input::placeholder {
+    color: #3d606d;
+}
+
+.input-group input:focus {
+    border-color: #16b9df;
+
+    background: rgba(3, 23, 31, 0.9);
+}
+
+
+/* =========================================================
+   CONTINUE BUTTON
+   ========================================================= */
+
+.login-button {
+    width: 100%;
+
+    height: 46px;
+
+    margin-top: 5px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    border: 1px solid #16b9df;
+
+    border-radius: 6px;
+
+    background: #0b6078;
+
+    color: #effaff;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.login-button:hover {
+    background: #0d718d;
+
+    box-shadow:
+        0 0 18px rgba(22, 185, 223, 0.12);
+}
+
+.login-button span {
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   SYSTEM INFO
+   ========================================================= */
+
+.system-info {
+    margin-top: auto;
+
+    padding-top: 32px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    border-top: 1px solid rgba(50, 144, 170, 0.18);
+}
+
+.system-info-item {
+    padding: 0 18px;
+
+    border-right: 1px solid rgba(50, 144, 170, 0.18);
+}
+
+.system-info-item:first-child {
+    padding-left: 0;
+}
+
+.system-info-item:last-child {
+    border-right: none;
+}
+
+.info-value {
+    display: block;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+    color: #d6e9ef;
+}
+
+.info-label {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 7px;
+
+    letter-spacing: 1px;
+
+    color: #477482;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.login-footer {
+    margin-top: 30px;
+
+    padding-top: 18px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    border-top: 1px solid rgba(50, 144, 170, 0.16);
+
+    font-size: 7px;
+
+    font-weight: 600;
+
+    letter-spacing: 1.5px;
+
+    color: #315c6b;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .login-globe-section {
+        width: 50%;
+    }
+
+    .login-panel-section {
+        width: 50%;
+    }
+
+    .login-panel {
+        width: calc(100% - 60px);
+    }
+}
+
+
+@media (max-width: 750px) {
+
+    .login-page {
+        overflow-y: auto;
+    }
+
+    .login-globe-section {
+        display: none;
+    }
+
+    .login-panel-section {
+        width: 100%;
+
+        min-height: 100vh;
+    }
+
+    .login-panel {
+        width: calc(100% - 48px);
+
+        padding-top: 55px;
+    }
+}

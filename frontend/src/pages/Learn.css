@@ -1,0 +1,396 @@
+.learn-page {
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            rgba(0, 190, 240, 0.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0, 190, 240, 0.025) 1px,
+            transparent 1px
+        ),
+        #031923;
+
+    background-size: 46px 46px;
+
+    color: #e7f5f8;
+
+    padding: 55px 7% 70px;
+
+    box-sizing: border-box;
+}
+
+
+/* HEADER */
+
+.learn-header {
+    max-width: 1100px;
+
+    margin: 0 auto 60px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 40px;
+}
+
+
+.learn-system-label,
+.module-label {
+    color: #00bde8;
+
+    font-size: 9px;
+    letter-spacing: 2.5px;
+}
+
+
+.learn-header h1 {
+    margin: 12px 0 10px;
+
+    font-size: 46px;
+    font-weight: 500;
+
+    letter-spacing: -1px;
+}
+
+
+.learn-header p {
+    max-width: 600px;
+
+    margin: 0;
+
+    color: #719aa8;
+
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+
+.learn-globe-button {
+    height: 46px;
+
+    padding: 0 20px;
+
+    border: 1px solid #00bde8;
+
+    background: transparent;
+
+    color: #cceff7;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+}
+
+
+.learn-globe-button:hover {
+    background: rgba(0, 189, 232, 0.08);
+}
+
+
+/* MODULE */
+
+.learning-module {
+    max-width: 1100px;
+
+    margin: 0 auto 35px;
+
+    display: grid;
+
+    grid-template-columns: 75px 1fr;
+
+    border-top: 1px solid rgba(0, 190, 240, 0.18);
+
+    padding-top: 28px;
+}
+
+
+.module-number {
+    color: #28596a;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+}
+
+
+.module-content {
+    padding-right: 20px;
+}
+
+
+.module-content h2 {
+    margin: 8px 0 12px;
+
+    font-size: 30px;
+
+    font-weight: 500;
+}
+
+
+.module-description {
+    max-width: 750px;
+
+    color: #719aa8;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    margin-bottom: 28px;
+}
+
+
+/* CONCEPTS */
+
+.concept-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    border: 1px solid rgba(0, 190, 240, 0.13);
+}
+
+
+.concept-grid > div {
+    min-height: 135px;
+
+    padding: 22px;
+
+    border-right: 1px solid rgba(0, 190, 240, 0.13);
+}
+
+
+.concept-grid > div:last-child {
+    border-right: none;
+}
+
+
+.concept-grid span,
+.effect-box span {
+    display: block;
+
+    color: #428096;
+
+    font-size: 8px;
+
+    letter-spacing: 1.8px;
+}
+
+
+.concept-grid strong {
+    display: block;
+
+    margin-top: 17px;
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+.concept-grid p {
+    margin: 8px 0 0;
+
+    color: #527f8e;
+
+    font-size: 10px;
+
+    line-height: 1.6;
+}
+
+
+/* EFFECT BOX */
+
+.effect-box {
+    margin-top: 14px;
+
+    padding: 17px 20px;
+
+    border-left: 2px solid #00bde8;
+
+    background: rgba(0, 190, 240, 0.035);
+}
+
+
+.effect-box div {
+    margin-top: 8px;
+
+    color: #8bb4c0;
+
+    font-size: 11px;
+}
+
+
+/* ACTION */
+
+.module-action {
+    margin-top: 20px;
+
+    padding: 13px 18px;
+
+    border: 1px solid rgba(0, 190, 240, 0.4);
+
+    background: rgba(0, 190, 240, 0.04);
+
+    color: #7fd7e8;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+}
+
+
+.module-action:hover {
+    background: rgba(0, 190, 240, 0.1);
+}
+
+
+/* CURRENT FLOW */
+
+.flow-diagram {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 25px;
+
+    border: 1px solid rgba(0, 190, 240, 0.13);
+
+    color: #8bc5d2;
+
+    font-size: 9px;
+
+    letter-spacing: 1.5px;
+}
+
+
+.flow-diagram > div {
+    flex: 1;
+
+    padding: 20px;
+
+    text-align: center;
+
+    border: 1px solid rgba(0, 190, 240, 0.16);
+}
+
+
+.flow-diagram span {
+    color: #00bde8;
+
+    font-size: 16px;
+}
+
+
+.flow-diagram small {
+    display: block;
+
+    margin-top: 8px;
+
+    color: #477c8c;
+
+    font-size: 7px;
+}
+
+
+/* OCEAN SYSTEM */
+
+.system-module {
+    padding-bottom: 30px;
+}
+
+
+.ocean-flow {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 25px;
+
+    border: 1px solid rgba(0, 190, 240, 0.18);
+
+    background: rgba(0, 190, 240, 0.025);
+}
+
+
+.ocean-flow div {
+    padding: 17px 20px;
+
+    border: 1px solid rgba(0, 190, 240, 0.18);
+
+    color: #9bd4df;
+
+    font-size: 8px;
+
+    letter-spacing: 1.3px;
+
+    text-align: center;
+}
+
+
+.ocean-flow span {
+    color: #00bde8;
+
+    font-size: 14px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .learn-page {
+        padding: 35px 5%;
+    }
+
+    .learn-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .learn-header h1 {
+        font-size: 36px;
+    }
+
+    .learning-module {
+        grid-template-columns: 45px 1fr;
+    }
+
+    .concept-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .concept-grid > div {
+        border-right: none;
+
+        border-bottom: 1px solid rgba(0, 190, 240, 0.13);
+    }
+
+    .flow-diagram,
+    .ocean-flow {
+        flex-direction: column;
+    }
+
+    .flow-diagram > div,
+    .ocean-flow div {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+}

@@ -1,0 +1,147 @@
+/* Optional hero styles are kept here for modularity.
+   Import this file from CurrentsHero.jsx if desired. */
+
+.currents-hero {
+  border: 1px solid rgba(67, 208, 235, 0.2);
+  background: linear-gradient(145deg, rgba(5, 31, 41, 0.98), rgba(2, 17, 25, 0.98));
+  position: relative;
+  overflow: hidden;
+}
+
+.currents-hero-top {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 50px;
+  padding: 46px 44px 34px;
+}
+
+.currents-hero h1 {
+  margin: 10px 0 0;
+  font-size: clamp(44px, 7vw, 78px);
+  line-height: .94;
+  font-weight: 400;
+  letter-spacing: -3px;
+}
+
+.currents-hero-tagline {
+  color: #23d2ff;
+  font-size: 17px;
+  margin: 20px 0 0;
+}
+
+.currents-hero-copy {
+  align-self: end;
+  color: #74a9b8;
+  line-height: 1.8;
+  font-size: 14px;
+  padding-bottom: 4px;
+}
+
+.currents-hero-visual {
+  height: 245px;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(67, 208, 235, 0.12);
+  border-bottom: 1px solid rgba(67, 208, 235, 0.12);
+  background:
+    radial-gradient(circle, rgba(15, 112, 145, .18), transparent 45%),
+    repeating-linear-gradient(0deg, transparent 0 30px, rgba(72, 208, 235, .04) 31px),
+    #031923;
+}
+
+.hero-orbit {
+  position: absolute;
+  width: 320px;
+  height: 150px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  border: 1px solid rgba(38, 218, 255, .3);
+  border-radius: 50%;
+  animation: heroOrbit 8s linear infinite;
+}
+
+.hero-orbit.orbit-two {
+  width: 470px;
+  height: 190px;
+  border-color: rgba(38, 218, 255, .12);
+  animation-duration: 14s;
+  animation-direction: reverse;
+}
+
+.hero-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #24d9ff;
+  border-radius: 50%;
+  text-align: center;
+  color: #a8effa;
+  font-size: 9px;
+  line-height: 1.5;
+  letter-spacing: 2px;
+  box-shadow: 0 0 35px rgba(36, 217, 255, .12);
+}
+
+.hero-wave {
+  position: absolute;
+  left: -10%;
+  width: 120%;
+  height: 80px;
+  border-top: 2px solid rgba(40, 217, 255, .45);
+  border-radius: 50%;
+  transform: rotate(-4deg);
+  animation: heroWave 5s ease-in-out infinite;
+}
+
+.hero-wave.wave-one { top: 24%; }
+.hero-wave.wave-two { top: 46%; animation-delay: -1.5s; opacity: .45; }
+.hero-wave.wave-three { top: 68%; animation-delay: -3s; opacity: .25; }
+
+.currents-hero-footer {
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.currents-hero-footer span {
+  display: block;
+  color: #4f8999;
+  font-size: 9px;
+  letter-spacing: 1.7px;
+  margin-bottom: 5px;
+}
+
+.currents-hero-footer strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@keyframes heroWave {
+  0%, 100% { transform: translateX(-2%) rotate(-4deg); }
+  50% { transform: translateX(2%) rotate(-1deg); }
+}
+
+@keyframes heroOrbit {
+  to { transform: translate(-50%, -50%) rotate(352deg); }
+}
+
+@media (max-width: 850px) {
+  .currents-hero-top {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 35px 25px;
+  }
+
+  .currents-hero-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

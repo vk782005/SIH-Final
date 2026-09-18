@@ -1,0 +1,2422 @@
+/* ============================================================
+   OCEAN-X
+   TEMPERATURE LEARNING ENVIRONMENT
+   FINAL PAGE STYLES
+============================================================ */
+
+
+/* ============================================================
+   DESIGN TOKENS
+============================================================ */
+
+:root {
+
+    --temperature-bg:
+        #03131c;
+
+    --temperature-bg-deep:
+        #020c13;
+
+    --temperature-panel:
+        rgba(7, 29, 40, 0.72);
+
+    --temperature-panel-dark:
+        rgba(3, 18, 27, 0.82);
+
+    --temperature-panel-light:
+        rgba(10, 39, 52, 0.68);
+
+    --temperature-cyan:
+        #00d9ff;
+
+    --temperature-cyan-soft:
+        #67ddf5;
+
+    --temperature-cyan-dim:
+        rgba(0, 217, 255, 0.48);
+
+    --temperature-cyan-faint:
+        rgba(0, 217, 255, 0.12);
+
+    --temperature-border:
+        rgba(0, 217, 255, 0.18);
+
+    --temperature-border-strong:
+        rgba(0, 217, 255, 0.35);
+
+    --temperature-text:
+        #e4f5fa;
+
+    --temperature-text-soft:
+        #91b9c5;
+
+    --temperature-text-muted:
+        #5e8996;
+
+    --temperature-warm:
+        #ff6b35;
+
+    --temperature-cool:
+        #4a90e2;
+
+    --temperature-cold:
+        #173d79;
+
+    --temperature-radius:
+        4px;
+
+    --temperature-radius-large:
+        8px;
+
+    --temperature-mono:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    --temperature-sans:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+}
+
+
+/* ============================================================
+   PAGE-SCOPED RESET
+============================================================ */
+
+.temperature-page,
+.temperature-page * {
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   TEMPERATURE PAGE
+   ------------------------------------------------------------
+   THIS IS THE ONLY SCROLL CONTAINER.
+============================================================ */
+
+.temperature-page {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+
+    height: 100vh;
+    height: 100dvh;
+
+    min-height: 0;
+
+    margin: 0;
+    padding: 0;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    background:
+
+        radial-gradient(
+            circle at 82% 8%,
+            rgba(0, 217, 255, 0.055),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 12% 42%,
+            rgba(0, 100, 170, 0.065),
+            transparent 32%
+        ),
+
+        linear-gradient(
+            135deg,
+            var(--temperature-bg-deep) 0%,
+            var(--temperature-bg) 48%,
+            #061923 100%
+        );
+
+    color:
+        var(--temperature-text);
+
+    font-family:
+        var(--temperature-sans);
+
+    -webkit-font-smoothing:
+        antialiased;
+
+    text-rendering:
+        optimizeLegibility;
+
+    scroll-behavior:
+        smooth;
+
+    overscroll-behavior-y:
+        contain;
+
+    -webkit-overflow-scrolling:
+        touch;
+
+    isolation:
+        isolate;
+
+    z-index:
+        1;
+}
+
+
+/* ============================================================
+   BACKGROUND GRID
+============================================================ */
+
+.temperature-page::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+    background-image:
+
+        linear-gradient(
+            rgba(0, 217, 255, 0.022) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(0, 217, 255, 0.022) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        44px 44px;
+
+    opacity:
+        0.75;
+
+    z-index:
+        -1;
+}
+
+
+/* ============================================================
+   MAIN CONTENT
+============================================================ */
+
+.temperature-main {
+
+    position: relative;
+
+    width:
+        min(
+            1180px,
+            calc(100% - 80px)
+        );
+
+    min-height:
+        max-content;
+
+    height:
+        auto !important;
+
+    margin:
+        0 auto;
+
+    padding:
+        34px 0 110px;
+
+    overflow:
+        visible !important;
+}
+
+
+/* ============================================================
+   HEADER / NAVIGATION
+============================================================ */
+
+.temperature-header {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    width: 100%;
+
+    min-height: 72px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin:
+        0 0 34px;
+
+    padding:
+        0 28px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.15);
+
+    background:
+        rgba(3, 17, 25, 0.88);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+
+/* ============================================================
+   HEADER SPACER
+============================================================ */
+
+.temperature-header-spacer {
+
+    flex:
+        1;
+}
+
+
+/* ============================================================
+   BACK TO DASHBOARD
+============================================================ */
+
+.temperature-nav-button {
+
+    appearance:
+        none;
+
+    -webkit-appearance:
+        none;
+
+    position:
+        relative;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        9px;
+
+    height:
+        38px;
+
+    padding:
+        0 15px;
+
+    margin:
+        0;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.40);
+
+    border-radius:
+        7px;
+
+    outline:
+        none;
+
+    color:
+        #6fe2fa;
+
+    background:
+        rgba(0, 45, 59, 0.34);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        9px;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        0.13em;
+
+    line-height:
+        1;
+
+    white-space:
+        nowrap;
+
+    cursor:
+        pointer;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(0, 217, 255, 0.025);
+
+    transition:
+        color 180ms ease,
+        background 180ms ease,
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+}
+
+
+/* ------------------------------------------------------------
+   BACK BUTTON ARROW
+------------------------------------------------------------ */
+
+.temperature-nav-button::first-letter {
+
+    font-size:
+        13px;
+}
+
+
+/* ------------------------------------------------------------
+   BACK BUTTON HOVER
+------------------------------------------------------------ */
+
+.temperature-nav-button:hover {
+
+    color:
+        #c5f6ff;
+
+    background:
+        rgba(0, 190, 230, 0.085);
+
+    border-color:
+        rgba(0, 217, 255, 0.78);
+
+    box-shadow:
+        0 0 22px rgba(0, 217, 255, 0.075),
+        inset 0 0 15px rgba(0, 217, 255, 0.035);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* ------------------------------------------------------------
+   BACK BUTTON ACTIVE
+------------------------------------------------------------ */
+
+.temperature-nav-button:active {
+
+    transform:
+        translateY(0);
+
+    background:
+        rgba(0, 190, 230, 0.14);
+
+    box-shadow:
+        inset 0 0 14px rgba(0, 217, 255, 0.06);
+}
+
+
+/* ------------------------------------------------------------
+   KEYBOARD FOCUS
+------------------------------------------------------------ */
+
+.temperature-nav-button:focus-visible {
+
+    border-color:
+        var(--temperature-cyan);
+
+    box-shadow:
+        0 0 0 2px rgba(0, 217, 255, 0.12),
+        0 0 18px rgba(0, 217, 255, 0.10);
+}
+
+
+/* ============================================================
+   HERO
+============================================================ */
+
+.temperature-hero {
+
+    position:
+        relative;
+
+    padding:
+        22px 0 78px;
+
+    border-bottom:
+        1px solid rgba(0, 217, 255, 0.13);
+}
+
+
+/* ============================================================
+   HERO EYEBROW
+============================================================ */
+
+.module-eyebrow {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    margin-bottom:
+        25px;
+
+    color:
+        var(--temperature-cyan);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.25em;
+}
+
+
+.module-eyebrow::before {
+
+    content:
+        "";
+
+    width:
+        24px;
+
+    height:
+        1px;
+
+    background:
+        var(--temperature-cyan);
+
+    box-shadow:
+        0 0 8px rgba(0, 217, 255, 0.55);
+}
+
+
+/* ============================================================
+   HERO GRID
+============================================================ */
+
+.temperature-hero-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(0, 1.15fr)
+        minmax(280px, 0.85fr);
+
+    gap:
+        70px;
+
+    align-items:
+        end;
+}
+
+
+/* ============================================================
+   HERO TITLE
+============================================================ */
+
+.temperature-hero h1 {
+
+    margin:
+        0;
+
+    color:
+        var(--temperature-text);
+
+    font-size:
+        clamp(
+            48px,
+            6vw,
+            76px
+        );
+
+    font-weight:
+        300;
+
+    letter-spacing:
+        -0.045em;
+
+    line-height:
+        0.98;
+}
+
+
+/* ============================================================
+   HERO SUBTITLE
+============================================================ */
+
+.temperature-subtitle {
+
+    max-width:
+        580px;
+
+    margin:
+        25px 0 0;
+
+    color:
+        var(--temperature-cyan);
+
+    font-size:
+        15px;
+
+    line-height:
+        1.65;
+}
+
+
+/* ============================================================
+   HERO DESCRIPTION
+============================================================ */
+
+.temperature-description {
+
+    max-width:
+        430px;
+
+    margin:
+        0;
+
+    color:
+        var(--temperature-text-soft);
+
+    font-size:
+        12px;
+
+    line-height:
+        1.9;
+}
+
+
+/* ============================================================
+   GENERIC SECTION
+============================================================ */
+
+.temperature-section {
+
+    position:
+        relative;
+
+    width:
+        100%;
+
+    height:
+        auto;
+
+    min-height:
+        0;
+
+    margin:
+        0 0 100px;
+
+    overflow:
+        visible !important;
+}
+
+
+/* ============================================================
+   SECTION HEADER
+============================================================ */
+
+.temperature-section-header {
+
+    display:
+        flex;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        space-between;
+
+    gap:
+        35px;
+
+    margin-bottom:
+        30px;
+}
+
+
+.temperature-section-header > div:first-child {
+
+    min-width:
+        0;
+}
+
+
+.temperature-section-header span {
+
+    display:
+        block;
+
+    margin-bottom:
+        10px;
+
+    color:
+        var(--temperature-cyan);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.22em;
+}
+
+
+.temperature-section-header h2 {
+
+    margin:
+        0;
+
+    color:
+        var(--temperature-text);
+
+    font-size:
+        34px;
+
+    font-weight:
+        350;
+
+    letter-spacing:
+        -0.025em;
+}
+
+
+.temperature-section-header p {
+
+    max-width:
+        650px;
+
+    margin:
+        11px 0 0;
+
+    color:
+        var(--temperature-text-soft);
+
+    font-size:
+        12px;
+
+    line-height:
+        1.7;
+}
+
+
+/* ============================================================
+   INTERACTIVE LAB
+============================================================ */
+
+.temperature-lab {
+
+    position:
+        relative;
+
+    margin-top:
+        78px;
+
+    padding:
+        36px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.18);
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(10, 40, 54, 0.68),
+            rgba(2, 18, 27, 0.82)
+        );
+
+    box-shadow:
+        0 25px 80px rgba(0, 0, 0, 0.14);
+
+    overflow:
+        visible !important;
+}
+
+
+/* ============================================================
+   LAB GRID
+============================================================ */
+
+.temperature-lab-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        280px minmax(0, 1fr);
+
+    min-height:
+        440px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.13);
+}
+
+
+/* ============================================================
+   CONTROLS
+============================================================ */
+
+.temperature-controls {
+
+    padding:
+        29px;
+
+    border-right:
+        1px solid rgba(0, 217, 255, 0.14);
+
+    background:
+        rgba(1, 12, 19, 0.60);
+}
+
+
+.temperature-control {
+
+    margin-bottom:
+        30px;
+}
+
+
+.temperature-control:last-child {
+
+    margin-bottom:
+        0;
+}
+
+
+.temperature-control label {
+
+    display:
+        block;
+
+    margin-bottom:
+        10px;
+
+    color:
+        var(--temperature-text-soft);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.17em;
+}
+
+
+.temperature-control select,
+.temperature-control input {
+
+    width:
+        100%;
+}
+
+
+/* ============================================================
+   SELECT
+============================================================ */
+
+.temperature-control select {
+
+    min-height:
+        42px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.20);
+
+    outline:
+        none;
+
+    color:
+        var(--temperature-text);
+
+    background:
+        rgba(0, 26, 38, 0.78);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        9px;
+
+    cursor:
+        pointer;
+}
+
+
+.temperature-control select:focus {
+
+    border-color:
+        rgba(0, 217, 255, 0.62);
+
+    box-shadow:
+        0 0 0 2px rgba(0, 217, 255, 0.055);
+}
+
+
+/* ============================================================
+   SLIDER
+============================================================ */
+
+.slider {
+
+    width:
+        100%;
+
+    height:
+        4px;
+
+    appearance:
+        none;
+
+    -webkit-appearance:
+        none;
+
+    margin:
+        8px 0;
+
+    border-radius:
+        4px;
+
+    outline:
+        none;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            var(--temperature-cold),
+            var(--temperature-cool),
+            var(--temperature-warm)
+        );
+
+    cursor:
+        pointer;
+}
+
+
+.slider::-webkit-slider-thumb {
+
+    appearance:
+        none;
+
+    -webkit-appearance:
+        none;
+
+    width:
+        14px;
+
+    height:
+        14px;
+
+    border:
+        1px solid var(--temperature-cyan);
+
+    border-radius:
+        50%;
+
+    background:
+        #031720;
+
+    box-shadow:
+        0 0 10px rgba(0, 217, 255, 0.45);
+
+    cursor:
+        pointer;
+}
+
+
+.slider::-moz-range-thumb {
+
+    width:
+        14px;
+
+    height:
+        14px;
+
+    border:
+        1px solid var(--temperature-cyan);
+
+    border-radius:
+        50%;
+
+    background:
+        #031720;
+
+    box-shadow:
+        0 0 10px rgba(0, 217, 255, 0.45);
+
+    cursor:
+        pointer;
+}
+
+
+/* ============================================================
+   VISUALIZATION
+============================================================ */
+
+.visualization-container {
+
+    position:
+        relative;
+
+    min-height:
+        440px;
+
+    padding:
+        30px;
+
+    background:
+        rgba(1, 15, 23, 0.45);
+
+    overflow:
+        visible;
+}
+
+
+/* ============================================================
+   OCEAN SCALE
+============================================================ */
+
+.ocean-scale {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        10px;
+
+    margin-top:
+        14px;
+
+    color:
+        var(--temperature-text-muted);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        7px;
+
+    letter-spacing:
+        0.05em;
+}
+
+
+/* ============================================================
+   DEPTH LINE
+============================================================ */
+
+.depth-line {
+
+    position:
+        absolute;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    height:
+        1px;
+
+    background:
+        var(--temperature-cyan);
+
+    box-shadow:
+        0 0 12px rgba(0, 217, 255, 0.55);
+}
+
+
+/* ============================================================
+   DEPTH TOOLTIP
+============================================================ */
+
+.depth-tooltip {
+
+    position:
+        absolute;
+
+    left:
+        100%;
+
+    top:
+        50%;
+
+    transform:
+        translate(12px, -50%);
+
+    min-width:
+        110px;
+
+    padding:
+        9px 11px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.30);
+
+    background:
+        rgba(2, 18, 27, 0.94);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.20);
+}
+
+
+.depth-tooltip strong {
+
+    display:
+        block;
+
+    color:
+        var(--temperature-text);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        10px;
+}
+
+
+.depth-tooltip span {
+
+    display:
+        block;
+
+    margin-top:
+        4px;
+
+    color:
+        var(--temperature-cyan);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        9px;
+}
+
+
+/* ============================================================
+   PROFILE
+============================================================ */
+
+.temperature-profile {
+
+    position:
+        relative;
+
+    margin-top:
+        95px;
+
+    padding:
+        35px 0;
+
+    border-top:
+        1px solid rgba(0, 217, 255, 0.12);
+
+    border-bottom:
+        1px solid rgba(0, 217, 255, 0.12);
+
+    overflow:
+        visible !important;
+}
+
+
+/* ============================================================
+   CONCEPT EXPLORER
+============================================================ */
+
+.concept-explorer {
+
+    margin-top:
+        80px;
+
+    overflow:
+        visible !important;
+}
+
+
+.concept-tabs {
+
+    display:
+        flex;
+
+    gap:
+        2px;
+
+    margin-bottom:
+        1px;
+
+    border-bottom:
+        1px solid rgba(0, 217, 255, 0.15);
+}
+
+
+.concept-tabs button {
+
+    flex:
+        1;
+
+    min-height:
+        45px;
+
+    padding:
+        0 18px;
+
+    border:
+        1px solid transparent;
+
+    color:
+        var(--temperature-text-muted);
+
+    background:
+        rgba(0, 20, 30, 0.42);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        8px;
+
+    letter-spacing:
+        0.12em;
+
+    cursor:
+        pointer;
+
+    transition:
+        color 180ms ease,
+        background 180ms ease,
+        border-color 180ms ease;
+}
+
+
+.concept-tabs button:hover {
+
+    color:
+        var(--temperature-cyan-soft);
+
+    background:
+        rgba(0, 180, 220, 0.05);
+}
+
+
+.concept-tabs button.active {
+
+    color:
+        var(--temperature-cyan);
+
+    border-color:
+        rgba(0, 217, 255, 0.25);
+
+    background:
+        rgba(0, 180, 220, 0.07);
+}
+
+
+.concept-content {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        70px minmax(0, 1fr);
+
+    gap:
+        25px;
+
+    padding:
+        34px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.13);
+
+    background:
+        rgba(4, 24, 34, 0.60);
+}
+
+
+.concept-content h3 {
+
+    margin:
+        0 0 12px;
+
+    color:
+        var(--temperature-text);
+
+    font-size:
+        23px;
+
+    font-weight:
+        400;
+}
+
+
+.concept-content p {
+
+    margin:
+        0;
+
+    color:
+        var(--temperature-text-soft);
+
+    line-height:
+        1.8;
+
+    font-size:
+        12px;
+}
+
+
+/* ============================================================
+   REGION CARDS
+============================================================ */
+
+.region-cards {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        14px;
+
+    margin-top:
+        25px;
+}
+
+
+.region-card {
+
+    padding:
+        22px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.13);
+
+    background:
+        rgba(4, 25, 36, 0.60);
+
+    transition:
+        border-color 180ms ease,
+        transform 180ms ease,
+        background 180ms ease;
+}
+
+
+.region-card:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(0, 217, 255, 0.30);
+
+    background:
+        rgba(7, 33, 46, 0.72);
+}
+
+
+/* ============================================================
+   EXPERIMENT
+============================================================ */
+
+.temperature-experiment {
+
+    margin-top:
+        85px;
+
+    padding:
+        38px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.18);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(10, 39, 52, 0.64),
+            rgba(3, 17, 26, 0.80)
+        );
+
+    overflow:
+        visible !important;
+}
+
+
+.experiment-options {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        12px;
+
+    margin-top:
+        28px;
+}
+
+
+.experiment-options button {
+
+    min-height:
+        52px;
+
+    padding:
+        0 18px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.20);
+
+    color:
+        var(--temperature-text-soft);
+
+    background:
+        rgba(0, 25, 36, 0.65);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        8px;
+
+    letter-spacing:
+        0.08em;
+
+    cursor:
+        pointer;
+
+    transition:
+        all 180ms ease;
+}
+
+
+.experiment-options button:hover {
+
+    color:
+        var(--temperature-cyan);
+
+    border-color:
+        rgba(0, 217, 255, 0.55);
+
+    background:
+        rgba(0, 190, 230, 0.07);
+}
+
+
+/* ============================================================
+   EXPERIMENT FEEDBACK
+============================================================ */
+
+.experiment-feedback {
+
+    margin-top:
+        25px;
+
+    padding:
+        20px;
+
+    border-left:
+        2px solid var(--temperature-cyan);
+
+    background:
+        rgba(0, 217, 255, 0.035);
+}
+
+
+.experiment-feedback span {
+
+    display:
+        block;
+
+    margin-bottom:
+        8px;
+
+    color:
+        var(--temperature-cyan);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        7px;
+
+    letter-spacing:
+        0.18em;
+}
+
+
+.experiment-feedback strong {
+
+    color:
+        var(--temperature-text);
+
+    font-size:
+        12px;
+
+    font-weight:
+        500;
+
+    line-height:
+        1.6;
+}
+
+
+/* ============================================================
+   QUIZ
+============================================================ */
+
+.temperature-quiz {
+
+    position:
+        relative;
+
+    margin-top:
+        90px;
+
+    padding:
+        35px 0;
+
+    overflow:
+        visible !important;
+}
+
+
+.quiz-question {
+
+    padding:
+        28px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.15);
+
+    background:
+        rgba(4, 25, 36, 0.60);
+}
+
+
+.quiz-options {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap:
+        10px;
+
+    margin-top:
+        20px;
+}
+
+
+.quiz-option {
+
+    padding:
+        16px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.15);
+
+    color:
+        var(--temperature-text-soft);
+
+    background:
+        rgba(0, 22, 32, 0.65);
+
+    font-family:
+        var(--temperature-sans);
+
+    font-size:
+        11px;
+
+    text-align:
+        left;
+
+    cursor:
+        pointer;
+
+    transition:
+        border-color 180ms ease,
+        background 180ms ease,
+        color 180ms ease;
+}
+
+
+.quiz-option:hover {
+
+    color:
+        var(--temperature-text);
+
+    border-color:
+        rgba(0, 217, 255, 0.45);
+
+    background:
+        rgba(0, 190, 230, 0.06);
+}
+
+
+.check-answer {
+
+    min-height:
+        44px;
+
+    margin-top:
+        20px;
+
+    padding:
+        0 20px;
+
+    border:
+        1px solid var(--temperature-cyan);
+
+    color:
+        var(--temperature-cyan);
+
+    background:
+        rgba(0, 190, 230, 0.06);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.14em;
+
+    cursor:
+        pointer;
+
+    transition:
+        background 180ms ease,
+        transform 180ms ease;
+}
+
+
+.check-answer:hover:not(:disabled) {
+
+    background:
+        rgba(0, 190, 230, 0.13);
+
+    transform:
+        translateY(-1px);
+}
+
+
+.check-answer:disabled {
+
+    opacity:
+        0.35;
+
+    cursor:
+        not-allowed;
+}
+
+
+.quiz-result {
+
+    margin-top:
+        18px;
+
+    padding:
+        18px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.20);
+
+    background:
+        rgba(0, 190, 230, 0.04);
+}
+
+
+.quiz-result strong {
+
+    color:
+        var(--temperature-cyan);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        9px;
+
+    letter-spacing:
+        0.14em;
+}
+
+
+.quiz-result p {
+
+    margin:
+        8px 0 0;
+
+    color:
+        var(--temperature-text-soft);
+
+    font-size:
+        11px;
+
+    line-height:
+        1.7;
+}
+
+
+/* ============================================================
+   GLOBE CONNECTION
+============================================================ */
+
+.temperature-globe {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        40px;
+
+    margin-top:
+        80px;
+
+    padding:
+        38px;
+
+    border:
+        1px solid rgba(0, 217, 255, 0.30);
+
+    background:
+
+        linear-gradient(
+            110deg,
+            rgba(0, 190, 230, 0.06),
+            rgba(3, 20, 30, 0.72)
+        );
+}
+
+
+.temperature-globe > div:first-child {
+
+    min-width:
+        0;
+}
+
+
+.temperature-globe > div > span {
+
+    color:
+        var(--temperature-cyan);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        8px;
+
+    letter-spacing:
+        0.18em;
+}
+
+
+.temperature-globe h2 {
+
+    margin:
+        12px 0;
+
+    color:
+        var(--temperature-text);
+
+    font-size:
+        27px;
+
+    font-weight:
+        400;
+}
+
+
+.temperature-globe p {
+
+    max-width:
+        650px;
+
+    margin:
+        0;
+
+    color:
+        var(--temperature-text-soft);
+
+    line-height:
+        1.75;
+
+    font-size:
+        12px;
+}
+
+
+.temperature-globe button {
+
+    flex-shrink:
+        0;
+
+    min-height:
+        50px;
+
+    padding:
+        0 22px;
+
+    border:
+        1px solid var(--temperature-cyan);
+
+    color:
+        var(--temperature-text);
+
+    background:
+        rgba(0, 190, 230, 0.07);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.14em;
+
+    cursor:
+        pointer;
+
+    transition:
+        background 180ms ease,
+        transform 180ms ease,
+        box-shadow 180ms ease;
+}
+
+
+.temperature-globe button:hover {
+
+    background:
+        rgba(0, 190, 230, 0.16);
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 30px rgba(0, 217, 255, 0.08);
+}
+
+
+.temperature-globe button span {
+
+    margin-left:
+        20px;
+
+    color:
+        var(--temperature-cyan);
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.student-footer {
+
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    justify-content:
+        space-between;
+
+    gap:
+        25px;
+
+    min-height:
+        100px;
+
+    margin-top:
+        80px;
+
+    margin-bottom:
+        40px;
+
+    padding:
+        28px 0 40px;
+
+    border-top:
+        1px solid rgba(73, 185, 207, 0.12);
+
+    color:
+        rgba(108, 171, 185, 0.43);
+
+    font-family:
+        var(--temperature-mono);
+
+    font-size:
+        7px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.19em;
+}
+
+
+/* ============================================================
+   FOOTER SPACER
+============================================================ */
+
+.temperature-footer-spacer {
+
+    width:
+        100%;
+
+    height:
+        120px !important;
+
+    min-height:
+        120px !important;
+
+    flex-shrink:
+        0;
+}
+
+
+/* ============================================================
+   CANVAS
+============================================================ */
+
+.temperature-page canvas {
+
+    display:
+        block;
+
+    max-width:
+        100%;
+}
+
+
+/* ============================================================
+   SCROLL PROTECTION
+   ------------------------------------------------------------
+   DO NOT REMOVE.
+============================================================ */
+
+.temperature-page .temperature-main,
+.temperature-page .temperature-section,
+.temperature-page .temperature-lab,
+.temperature-page .concept-explorer,
+.temperature-page .temperature-profile,
+.temperature-page .temperature-experiment,
+.temperature-page .temperature-quiz {
+
+    height:
+        auto !important;
+
+    min-height:
+        0;
+
+    overflow:
+        visible !important;
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 1000px) {
+
+    .temperature-main {
+
+        width:
+            calc(100% - 48px);
+    }
+
+
+    .temperature-hero-grid {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            30px;
+    }
+
+
+    .temperature-description {
+
+        max-width:
+            700px;
+    }
+
+
+    .temperature-lab-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .temperature-controls {
+
+        border-right:
+            none;
+
+        border-bottom:
+            1px solid rgba(0, 217, 255, 0.14);
+    }
+
+
+    .region-cards {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .temperature-globe {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+    }
+
+
+    .temperature-globe button {
+
+        width:
+            auto;
+    }
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 700px) {
+
+    .temperature-main {
+
+        width:
+            calc(100% - 28px);
+
+        padding-top:
+            20px;
+    }
+
+
+    .temperature-header {
+
+        min-height:
+            62px;
+
+        padding:
+            0 18px;
+
+        margin-bottom:
+            25px;
+    }
+
+
+    .temperature-nav-button {
+
+        height:
+            36px;
+
+        padding:
+            0 12px;
+
+        font-size:
+            8px;
+    }
+
+
+    .temperature-hero {
+
+        padding-bottom:
+            55px;
+    }
+
+
+    .temperature-hero h1 {
+
+        font-size:
+            48px;
+    }
+
+
+    .temperature-subtitle {
+
+        font-size:
+            13px;
+    }
+
+
+    .temperature-description {
+
+        font-size:
+            11px;
+    }
+
+
+    .temperature-lab {
+
+        padding:
+            24px;
+    }
+
+
+    .temperature-section-header {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        gap:
+            16px;
+    }
+
+
+    .temperature-section-header h2 {
+
+        font-size:
+            28px;
+    }
+
+
+    .temperature-lab-grid {
+
+        display:
+            block;
+
+        min-height:
+            0;
+    }
+
+
+    .temperature-controls {
+
+        padding:
+            22px;
+    }
+
+
+    .visualization-container {
+
+        min-height:
+            320px;
+
+        padding:
+            20px;
+    }
+
+
+    .concept-tabs {
+
+        flex-direction:
+            column;
+    }
+
+
+    .concept-tabs button {
+
+        width:
+            100%;
+
+        flex:
+            none;
+    }
+
+
+    .concept-content {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            15px;
+
+        padding:
+            25px;
+    }
+
+
+    .concept-content h3 {
+
+        font-size:
+            20px;
+    }
+
+
+    .region-cards {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .experiment-options {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .temperature-experiment {
+
+        padding:
+            25px;
+    }
+
+
+    .temperature-quiz {
+
+        padding:
+            30px 0;
+    }
+
+
+    .quiz-question {
+
+        padding:
+            22px;
+    }
+
+
+    .quiz-options {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .temperature-globe {
+
+        padding:
+            28px;
+
+        margin-top:
+            55px;
+    }
+
+
+    .temperature-globe h2 {
+
+        font-size:
+            24px;
+    }
+
+
+    .temperature-globe button {
+
+        width:
+            100%;
+    }
+
+
+    .student-footer {
+
+        flex-direction:
+            column;
+
+        gap:
+            14px;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+============================================================ */
+
+@media (max-width: 480px) {
+
+    .temperature-main {
+
+        width:
+            calc(100% - 20px);
+    }
+
+
+    .temperature-header {
+
+        padding:
+            0 14px;
+    }
+
+
+    .temperature-nav-button {
+
+        height:
+            34px;
+
+        padding:
+            0 11px;
+
+        font-size:
+            7px;
+
+        letter-spacing:
+            0.09em;
+    }
+
+
+    .temperature-hero h1 {
+
+        font-size:
+            41px;
+    }
+
+
+    .temperature-lab {
+
+        padding:
+            18px;
+    }
+
+
+    .temperature-controls {
+
+        padding:
+            18px;
+    }
+
+
+    .visualization-container {
+
+        min-height:
+            270px;
+
+        padding:
+            14px;
+    }
+
+
+    .concept-content {
+
+        padding:
+            20px;
+    }
+
+
+    .temperature-experiment {
+
+        padding:
+            20px;
+    }
+
+
+    .temperature-globe {
+
+        padding:
+            22px;
+    }
+
+
+    .student-footer {
+
+        font-size:
+            6px;
+    }
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .temperature-page {
+
+        scroll-behavior:
+            auto;
+    }
+
+
+    .temperature-page *,
+    .temperature-page *::before,
+    .temperature-page *::after {
+
+        transition:
+            none !important;
+
+        animation:
+            none !important;
+    }
+}
