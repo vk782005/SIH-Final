@@ -38,6 +38,8 @@ export default function ExploreCommandBar({
     selectionMode,
     activeLayer,
     onOpenDataUpload,
+    onOpenAnalysis,
+    onOpenDepthAnalysis,
     children,
 }) {
     const barRef = useRef(null);
@@ -121,8 +123,18 @@ export default function ExploreCommandBar({
                                 active ? "is-active" : ""
                             }`}
                             aria-expanded={open}
-                            aria-haspopup="menu"
-                            onClick={() => onOpenCommand(open ? null : id)}
+                            aria-haspopup={id === "depth" || id === "analysis" ? undefined : "menu"}
+                            onClick={() => {
+                                if (id === "depth") {
+                                    onOpenDepthAnalysis?.();
+                                    return;
+                                }
+                                if (id === "analysis") {
+                                    onOpenAnalysis?.();
+                                    return;
+                                }
+                                onOpenCommand(open ? null : id);
+                            }}
                         >
                             <Icon />
                             <span className="ox-command__label">

@@ -502,31 +502,36 @@ export default function ExploreScreen({ onOpenResearchWorkspace, onOpenDepthAnal
         [cancelAreaAnalysis, closeTool, openTool],
     );
 
-    const chooseLayer = (id) => {
+    const chooseLayer = useCallback((id) => {
         setActiveLayerId((current) => (current === id ? null : id));
         setOpenCommand(null);
         if (id !== activeLayerId) openTool("layers");
-    };
+    }, [activeLayerId, openTool]);
 
-    const openColor = () => {
+    const openColor = useCallback(() => {
         setOpenCommand(null);
         openTool("color");
-    };
+    }, [openTool]);
 
-    const openDepth = () => {
+    // Full-screen research navigation must always clear any contextual
+    // Explore panels first. Otherwise an active layer panel can retain its
+    // overlay state while App.jsx changes the top-level screen.
+    const openDepth = useCallback(() => {
         setOpenCommand(null);
+        setOpenTools([]);
         onOpenDepthAnalysis?.();
-    };
+    }, [onOpenDepthAnalysis]);
 
-    const openAnalysis = () => {
+    const openAnalysis = useCallback(() => {
         setOpenCommand(null);
+        setOpenTools([]);
         onOpenResearchWorkspace?.("analysis");
-    };
+    }, [onOpenResearchWorkspace]);
 
-    const openIsoLayer = () => {
+    const openIsoLayer = useCallback(() => {
         setOpenCommand(null);
         openTool("isolayer");
-    };
+    }, [openTool]);
 
     /* ---- Command handling ------------------------------------------------- */
 
@@ -585,6 +590,8 @@ export default function ExploreScreen({ onOpenResearchWorkspace, onOpenDepthAnal
                 selectionMode={selectionMode}
                 activeLayer={activeLayer}
                 onOpenDataUpload={() => setUploadOpen(true)}
+                onOpenAnalysis={openAnalysis}
+                onOpenDepthAnalysis={openDepth}
             >
                 {openCommand === "location" && (
                     <CommandMenu
