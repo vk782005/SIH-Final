@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 
 const DensityExperiment = () => {
   const [temperature, setTemperature] = useState(15);

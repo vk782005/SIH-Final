@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 import './TemperaturePage.css';
 
 import TemperatureHero from '../components/temperature/TemperatureHero';

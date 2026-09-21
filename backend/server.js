@@ -129,6 +129,317 @@ app.get("/api/ocean-data", async (req, res) => {
     }
 });
 
+
+// =========================================================
+// Area Analysis API
+// POST /api/ocean-area-analysis
+//
+// Accepts a polygon as:
+// {
+//   polygon: [
+//     { latitude: 30.2, longitude: 75.4 },
+//     { latitude: 30.8, longitude: 76.1 },
+//     { latitude: 29.9, longitude: 77.0 }
+//   ]
+// }
+//
+// The polygon is converted to GeoJSON and evaluated by PostGIS
+// against the indexed ocean_grid.geom points. This keeps the
+// heavy regional aggregation in PostgreSQL instead of the browser.
+// =========================================================
+app.post("/api/ocean-area-analysis", async (req, res) => {
+    try {
+        const { polygon } = req.body ?? {};
+
+        if (!Array.isArray(polygon) || polygon.length < 3) {
+            return res.status(400).json({
+                error: "A polygon with at least 3 points is required.",
+            });
+        }
+
+        if (polygon.length > 5000) {
+            return res.status(400).json({
+                error: "Polygon has too many vertices. Maximum is 5000.",
+            });
+        }
+
+        const points = polygon.map((point) => ({
+            latitude: Number(point?.latitude),
+            longitude: Number(point?.longitude),
+        }));
+
+        const invalidPoint = points.find(
+            ({ latitude, longitude }) =>
+                !Number.isFinite(latitude) ||
+                !Number.isFinite(longitude) ||
+                latitude < -90 ||
+                latitude > 90 ||
+                longitude < -180 ||
+                longitude > 180,
+        );
+
+        if (invalidPoint) {
+            return res.status(400).json({
+                error:
+                    "Every polygon point must have a latitude between -90 and 90 and a longitude between -180 and 180.",
+            });
+        }
+
+        // Remove a duplicated closing point if the frontend already sent one.
+        const ringPoints = [...points];
+        const first = ringPoints[0];
+        const last = ringPoints[ringPoints.length - 1];
+
+        if (
+            first.latitude === last.latitude &&
+            first.longitude === last.longitude
+        ) {
+            ringPoints.pop();
+        }
+
+        // A polygon still needs 3 unique vertices after normalization.
+        const uniqueVertices = new Set(
+            ringPoints.map(
+                ({ latitude, longitude }) =>
+                    `${latitude.toFixed(10)},${longitude.toFixed(10)}`,
+            ),
+        );
+
+        if (ringPoints.length < 3 || uniqueVertices.size < 3) {
+            return res.status(400).json({
+                error: "A polygon must contain at least 3 distinct vertices.",
+            });
+        }
+
+        // GeoJSON uses [longitude, latitude], and a Polygon ring must be closed.
+        const coordinates = [
+            ...ringPoints.map(({ latitude, longitude }) => [
+                longitude,
+                latitude,
+            ]),
+            [
+                ringPoints[0].longitude,
+                ringPoints[0].latitude,
+            ],
+        ];
+
+        const geoJson = JSON.stringify({
+            type: "Polygon",
+            coordinates: [coordinates],
+        });
+
+        const result = await pool.query(
+            `
+            WITH input_polygon AS (
+                SELECT ST_SetSRID(
+                    ST_GeomFromGeoJSON($1),
+                    4326
+                ) AS geom
+            ),
+            selected_cells AS (
+                SELECT
+                    g.time,
+                    g.depth,
+                    g.bottomT,
+                    g.mlotst,
+                    g.so,
+                    g.thetao,
+                    g.uo,
+                    g.vo,
+                    g.zos,
+                    g.siconc,
+                    g.sithick,
+                    g.usi,
+                    g.vsi
+                FROM ocean_grid AS g
+                CROSS JOIN input_polygon AS p
+                WHERE g.geom IS NOT NULL
+                  AND g.geom && p.geom
+                  AND ST_Covers(p.geom, g.geom)
+                  AND (
+                      g.thetao IS NOT NULL
+                      OR g.so IS NOT NULL
+                      OR g.uo IS NOT NULL
+                      OR g.vo IS NOT NULL
+                      OR g.zos IS NOT NULL
+                  )
+            )
+            SELECT
+                COUNT(*)::integer AS cells_analyzed,
+
+                AVG(thetao) AS mean_temperature,
+                COUNT(thetao)::integer AS temperature_cells,
+
+                AVG(so) AS mean_salinity,
+                COUNT(so)::integer AS salinity_cells,
+
+                AVG(zos) AS mean_sea_height,
+                COUNT(zos)::integer AS sea_height_cells,
+
+                AVG(uo) FILTER (
+                    WHERE uo IS NOT NULL AND vo IS NOT NULL
+                ) AS mean_u,
+                AVG(vo) FILTER (
+                    WHERE uo IS NOT NULL AND vo IS NOT NULL
+                ) AS mean_v,
+                COUNT(*) FILTER (
+                    WHERE uo IS NOT NULL AND vo IS NOT NULL
+                )::integer AS current_cells,
+
+                AVG(depth) AS mean_depth,
+                COUNT(depth)::integer AS depth_cells,
+
+                AVG(bottomT) AS mean_bottom_temperature,
+                COUNT(bottomT)::integer AS bottom_temperature_cells,
+
+                AVG(mlotst) AS mean_mixed_layer_depth,
+                COUNT(mlotst)::integer AS mixed_layer_depth_cells,
+
+                AVG(siconc) AS mean_sea_ice_concentration,
+                COUNT(siconc)::integer AS sea_ice_cells,
+
+                MIN(time) AS time_start,
+                MAX(time) AS time_end
+
+            FROM selected_cells;
+            `,
+            [geoJson],
+        );
+
+        // ST_Area(geography) returns square metres, so convert to km².
+        const areaResult = await pool.query(
+            `
+            SELECT
+                ST_Area(
+                    ST_SetSRID(
+                        ST_GeomFromGeoJSON($1),
+                        4326
+                    )::geography
+                ) / 1000000.0 AS area_km2;
+            `,
+            [geoJson],
+        );
+
+        const row = result.rows[0];
+        const areaKm2 = Number(areaResult.rows[0]?.area_km2 ?? 0);
+        const cellsAnalyzed = Number(row.cells_analyzed ?? 0);
+
+        if (cellsAnalyzed === 0) {
+            return res.status(200).json({
+                areaKm2,
+                vertices: ringPoints.length,
+                cellsAnalyzed: 0,
+                message:
+                    "No valid ocean grid cells fall inside the selected polygon.",
+                metrics: {
+                    temperature: null,
+                    salinity: null,
+                    currents: null,
+                    seaHeight: null,
+                },
+                coverage: {
+                    temperatureCells: 0,
+                    salinityCells: 0,
+                    currentCells: 0,
+                    seaHeightCells: 0,
+                },
+                modelTime: null,
+            });
+        }
+
+        const meanU =
+            row.mean_u === null ? null : Number(row.mean_u);
+        const meanV =
+            row.mean_v === null ? null : Number(row.mean_v);
+
+        let current = null;
+
+        if (meanU !== null && meanV !== null) {
+            const speed = Math.hypot(meanU, meanV);
+
+            // Match the existing frontend's bearing convention:
+            // atan2(u, v), clockwise from north.
+            let bearing = (Math.atan2(meanU, meanV) * 180) / Math.PI;
+            if (bearing < 0) bearing += 360;
+
+            const compassPoints = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+            const compass =
+                compassPoints[Math.round(bearing / 45) % 8];
+
+            current = {
+                meanU,
+                meanV,
+                speed,
+                bearing,
+                compass,
+                cellsAnalyzed: Number(row.current_cells ?? 0),
+            };
+        }
+
+        const modelTime =
+            row.time_start && row.time_end && String(row.time_start) === String(row.time_end)
+                ? row.time_start
+                : null;
+
+        return res.json({
+            areaKm2,
+            vertices: ringPoints.length,
+            cellsAnalyzed,
+
+            metrics: {
+                temperature:
+                    row.mean_temperature === null
+                        ? null
+                        : Number(row.mean_temperature),
+
+                salinity:
+                    row.mean_salinity === null
+                        ? null
+                        : Number(row.mean_salinity),
+
+                currents: current,
+
+                seaHeight:
+                    row.mean_sea_height === null
+                        ? null
+                        : Number(row.mean_sea_height),
+            },
+
+            coverage: {
+                temperatureCells: Number(row.temperature_cells ?? 0),
+                salinityCells: Number(row.salinity_cells ?? 0),
+                currentCells: Number(row.current_cells ?? 0),
+                seaHeightCells: Number(row.sea_height_cells ?? 0),
+            },
+
+            additionalMetrics: {
+                meanDepth:
+                    row.mean_depth === null ? null : Number(row.mean_depth),
+                meanBottomTemperature:
+                    row.mean_bottom_temperature === null
+                        ? null
+                        : Number(row.mean_bottom_temperature),
+                meanMixedLayerDepth:
+                    row.mean_mixed_layer_depth === null
+                        ? null
+                        : Number(row.mean_mixed_layer_depth),
+                meanSeaIceConcentration:
+                    row.mean_sea_ice_concentration === null
+                        ? null
+                        : Number(row.mean_sea_ice_concentration),
+            },
+
+            modelTime,
+        });
+    } catch (error) {
+        console.error("Ocean area analysis error:", error);
+
+        res.status(500).json({
+            error: "Failed to analyze the selected ocean area.",
+        });
+    }
+});
+
 // =========================================================
 // HeatMap / Visualizations API
 // Continuous Ocean Raster + Current Vector Field API

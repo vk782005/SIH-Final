@@ -626,7 +626,13 @@ function createFlowMaterial({ cometLength, gap, cometCount, maxAlpha, phase, spe
 
 export default function CurrentFlowLayer({ viewer, raster, visible = false, opacity = 1 }) {
     const configRef = useRef({ visible, opacity });
-    configRef.current = { visible, opacity };
+
+    // Written after every commit rather than during render, so the
+    // animation loop always reads the latest visible/opacity without this
+    // component needing to rebuild anything when they change.
+    useEffect(() => {
+        configRef.current = { visible, opacity };
+    });
 
     const stateRef = useRef({
         animationFrame: null,

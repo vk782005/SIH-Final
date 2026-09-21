@@ -1,11 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
-import Header from "./components/Header";
-import CesiumGlobe from "./components/CesiumGlobe";
-import LayerPanel from "./components/LayerPanel";
-import LocationPanel from "./components/LocationPanel";
-import DataUploadModal from "./components/DataUploadModal";
-import ShipTracker from "./components/ShipTracker";
+import ExploreScreen from "./explore/ExploreScreen.jsx";
 
 import Login from "./pages/Login";
 import StudentDashboard from "./pages/StudentDashboard";
@@ -13,6 +8,9 @@ import TemperaturePage from "./pages/TemperaturePage.jsx";
 import SalinityPage from "./pages/SalinityPage.jsx";
 import CurrentsPage from "./pages/CurrentsPage";
 import ChlorophyllPage from "./pages/ChlorophyllPage.jsx";
+import ResearchWorkspace from "./pages/ResearchWorkspace/ResearchWorkspace";
+import DepthAnalysisPage from "./pages/DepthAnalysisPage/DepthAnalysisPage";
+import DataUploadModal from "./components/DataUploadModal.jsx";
 
 // =============================================================
 // APP
@@ -41,6 +39,18 @@ function App() {
     const [showGlobe, setShowGlobe] =
         useState(false);
 
+    // Workspace/depth navigation is kept at the app level so the globe
+    // command bar can open the full research tools without duplicating
+    // those pages inside ExploreScreen.
+    const [workspacePage, setWorkspacePage] =
+        useState("overview");
+
+    const [showDepthAnalysis, setShowDepthAnalysis] =
+        useState(false);
+
+    const [showDatasetModal, setShowDatasetModal] =
+        useState(false);
+
 
     // =========================================================
     // LOGIN
@@ -53,7 +63,12 @@ function App() {
             role
         );
 
-        setUserRole(role);
+        const normalizedRole =
+            String(role || "")
+                .trim()
+                .toLowerCase();
+
+        setUserRole(normalizedRole);
         setIsAuthenticated(true);
 
 
@@ -61,416 +76,47 @@ function App() {
         // STUDENT
         // -----------------------------------------------------
 
-        if (role === "student") {
+        if (normalizedRole === "student") {
 
             setStudentPage("dashboard");
-
             setShowGlobe(false);
+            setShowDepthAnalysis(false);
 
             return;
         }
 
 
         // -----------------------------------------------------
-        // OTHER ROLES
+        // ADMIN / ADMINISTRATOR / RESEARCHER
+        // -----------------------------------------------------
+
+        // Research-capable roles land directly in the Cesium Ocean Explorer.
+        // The full Research Workspace / Analysis Lab is opened explicitly
+        // from the globe command bar via the Analysis command. Depth Analysis
+        // is likewise opened explicitly from the Depth command.
+
+        if (
+            normalizedRole === "admin" ||
+            normalizedRole === "administrator" ||
+            normalizedRole === "researcher"
+        ) {
+
+            setShowGlobe(true);
+            setShowDepthAnalysis(false);
+            setWorkspacePage("overview");
+
+            return;
+        }
+
+
+        // -----------------------------------------------------
+        // FALLBACK
         // -----------------------------------------------------
 
         setShowGlobe(true);
+        setShowDepthAnalysis(false);
     };
 
-
-    // =========================================================
-    // VIEWPORT
-    // =========================================================
-
-    const [viewport, setViewport] =
-        useState({
-            width:
-                document.documentElement.clientWidth,
-
-            height:
-                document.documentElement.clientHeight,
-        });
-
-
-    // =========================================================
-    // LOCATION / POINT DATA
-    // =========================================================
-
-    const [selectedLocation, setSelectedLocation] =
-        useState(null);
-
-    const [oceanData, setOceanData] =
-        useState(null);
-
-    const [message, setMessage] =
-        useState("");
-
-    const [loading, setLoading] =
-        useState(false);
-
-
-    // =========================================================
-    // ACTIVE LAYER
-    // =========================================================
-
-    const [selectedVariable, setSelectedVariable] =
-        useState(null);
-
-
-    // =========================================================
-    // LAYER DATA
-    // =========================================================
-
-    const [layerDataByVariable, setLayerDataByVariable] =
-        useState({});
-
-    const [layerLoading, setLayerLoading] =
-        useState(false);
-
-
-    // =========================================================
-    // DATASET MODAL
-    // =========================================================
-
-    const [showDatasetModal, setShowDatasetModal] =
-        useState(false);
-
-
-    // =========================================================
-    // SHIP TRACKING
-    // =========================================================
-
-    const [trackingShips, setTrackingShips] =
-        useState(false);
-
-
-    // =========================================================
-    // VIEWPORT RESIZE
-    // =========================================================
-
-    useEffect(() => {
-
-        const handleResize = () => {
-
-            setViewport({
-                width:
-                    document.documentElement.clientWidth,
-
-                height:
-                    document.documentElement.clientHeight,
-            });
-        };
-
-
-        window.addEventListener(
-            "resize",
-            handleResize
-        );
-
-
-        return () => {
-
-            window.removeEventListener(
-                "resize",
-                handleResize
-            );
-        };
-
-    }, []);
-
-
-    // =========================================================
-    // LAYER SELECTION
-    // =========================================================
-
-    const handleVariableChange = (variable) => {
-
-        // Clicking the currently selected layer
-        // turns it off.
-
-        if (
-            selectedVariable === variable
-        ) {
-
-            setSelectedVariable(null);
-
-            return;
-        }
-
-
-        setSelectedVariable(variable);
-    };
-
-
-    // =========================================================
-    // FETCH OCEAN LAYER DATA
-    // =========================================================
-
-    useEffect(() => {
-
-        // -----------------------------------------------------
-        // Nothing selected
-        // -----------------------------------------------------
-
-        if (!selectedVariable) {
-
-            setLayerLoading(false);
-
-            return;
-        }
-
-
-        // -----------------------------------------------------
-        // Already loaded
-        // -----------------------------------------------------
-
-        if (
-            layerDataByVariable[selectedVariable]
-        ) {
-
-            setLayerLoading(false);
-
-            return;
-        }
-
-
-        const controller =
-            new AbortController();
-
-
-        // -----------------------------------------------------
-        // Fetch
-        // -----------------------------------------------------
-
-        const fetchLayerData = async () => {
-
-            setLayerLoading(true);
-
-
-            try {
-
-                console.log(
-                    `Fetching ${selectedVariable} raster...`
-                );
-
-
-                const response =
-                    await fetch(
-                        `http://localhost:5001/api/ocean-layer?variable=${selectedVariable}`,
-                        {
-                            signal:
-                                controller.signal,
-                        }
-                    );
-
-
-                const result =
-                    await response.json();
-
-
-                console.log(
-                    "Ocean raster response:",
-                    result
-                );
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        result.error ||
-                        "Failed to fetch ocean raster"
-                    );
-                }
-
-
-                // -------------------------------------------------
-                // Store data by variable
-                // -------------------------------------------------
-
-                setLayerDataByVariable(
-                    (previous) => ({
-                        ...previous,
-
-                        [selectedVariable]:
-                            result,
-                    })
-                );
-
-
-            } catch (error) {
-
-                // Ignore aborted requests
-
-                if (
-                    error.name ===
-                    "AbortError"
-                ) {
-
-                    return;
-                }
-
-
-                console.error(
-                    "Layer API error:",
-                    error
-                );
-
-
-            } finally {
-
-                if (
-                    !controller.signal.aborted
-                ) {
-
-                    setLayerLoading(false);
-                }
-            }
-        };
-
-
-        fetchLayerData();
-
-
-        // -----------------------------------------------------
-        // Cleanup
-        // -----------------------------------------------------
-
-        return () => {
-
-            controller.abort();
-        };
-
-
-    }, [
-        selectedVariable,
-        layerDataByVariable,
-    ]);
-
-
-    // =========================================================
-    // GLOBE CLICK
-    // =========================================================
-
-    const handleGlobeClick =
-        useCallback(
-            async ({ lat, lng }) => {
-
-                console.log(
-                    "Globe clicked:",
-                    lat,
-                    lng
-                );
-
-
-                // -------------------------------------------------
-                // Store selected location
-                // -------------------------------------------------
-
-                setSelectedLocation({
-                    latitude:
-                        lat,
-
-                    longitude:
-                        lng,
-                });
-
-
-                // -------------------------------------------------
-                // Clear previous data
-                // -------------------------------------------------
-
-                setOceanData(null);
-
-                setMessage("");
-
-                setLoading(true);
-
-
-                try {
-
-                    // -------------------------------------------------
-                    // Request nearest ocean observation
-                    // -------------------------------------------------
-
-                    const response =
-                        await fetch(
-                            `http://localhost:5001/api/ocean-data?latitude=${lat}&longitude=${lng}`
-                        );
-
-
-                    const result =
-                        await response.json();
-
-
-                    console.log(
-                        "Backend response:",
-                        result
-                    );
-
-
-                    // -------------------------------------------------
-                    // API error
-                    // -------------------------------------------------
-
-                    if (
-                        !response.ok
-                    ) {
-
-                        setMessage(
-                            result.message ||
-                            "Something went wrong."
-                        );
-
-                        return;
-                    }
-
-
-                    // -------------------------------------------------
-                    // No ocean data
-                    // -------------------------------------------------
-
-                    if (
-                        !result.hasOceanData
-                    ) {
-
-                        setMessage(
-                            result.message
-                        );
-
-                        return;
-                    }
-
-
-                    // -------------------------------------------------
-                    // Successful result
-                    // -------------------------------------------------
-
-                    setOceanData(result);
-
-
-                } catch (error) {
-
-                    console.error(
-                        "API error:",
-                        error
-                    );
-
-
-                    setMessage(
-                        "Could not connect to the backend."
-                    );
-
-
-                } finally {
-
-                    setLoading(false);
-                }
-
-            },
-
-            []
-        );
 
 
     // =========================================================
@@ -738,197 +384,100 @@ function App() {
 
 
     // =========================================================
+    // DEPTH ANALYSIS
+    // =========================================================
+
+    if (
+        (
+            userRole === "admin" ||
+            userRole === "administrator" ||
+            userRole === "researcher"
+        ) &&
+        !showGlobe &&
+        showDepthAnalysis
+    ) {
+        return (
+            <DepthAnalysisPage
+                onOpenGlobe={() => {
+                    setShowDepthAnalysis(false);
+                    setShowGlobe(true);
+                }}
+                onNavigate={(page) => {
+                    if (page === "analysis") {
+                        setShowDepthAnalysis(false);
+                        setWorkspacePage("analysis");
+                        setShowGlobe(false);
+                        return;
+                    }
+
+                    if (page === "explorer") {
+                        setShowDepthAnalysis(false);
+                        setShowGlobe(true);
+                    }
+                }}
+            />
+        );
+    }
+
+
+    // =========================================================
+    // RESEARCH WORKSPACE
+    // =========================================================
+
+    if (
+        (
+            userRole === "admin" ||
+            userRole === "administrator" ||
+            userRole === "researcher"
+        ) &&
+        !showGlobe
+    ) {
+
+        return (
+            <>
+                <ResearchWorkspace
+                    initialPage={workspacePage}
+                    onOpenGlobe={() => {
+                        setShowDepthAnalysis(false);
+                        setShowGlobe(true);
+                    }}
+                    onAddData={() => setShowDatasetModal(true)}
+                    onLogout={() => {
+                        setIsAuthenticated(false);
+                        setUserRole(null);
+                        setShowGlobe(false);
+                        setShowDepthAnalysis(false);
+                        setShowDatasetModal(false);
+                        setStudentPage("dashboard");
+                        setWorkspacePage("overview");
+                    }}
+                />
+
+                <DataUploadModal
+                    isOpen={showDatasetModal}
+                    onClose={() => setShowDatasetModal(false)}
+                />
+            </>
+        );
+    }
+
+
+    // =========================================================
     // OCEAN-X CESIUM APPLICATION
     // =========================================================
 
     return (
-
-        <div className="app">
-
-            {/* =================================================
-                HEADER
-            ================================================= */}
-
-            <Header />
-
-
-            {/* =================================================
-                ADD NEW DATA
-            ================================================= */}
-
-            <button
-                type="button"
-                className="add-dataset-button"
-                onClick={() =>
-                    setShowDatasetModal(true)
-                }
-            >
-
-                <span className="add-dataset-icon">
-                    +
-                </span>
-
-                <span>
-                    Add New Data
-                </span>
-
-            </button>
-
-
-            {/* =================================================
-                SHIP TRACKER
-            ================================================= */}
-
-            <ShipTracker
-
-                tracking={
-                    trackingShips
-                }
-
-                onTrackingChange={
-                    setTrackingShips
-                }
-
-            />
-
-
-            {/* =================================================
-                LAYER PANEL
-            ================================================= */}
-
-            <LayerPanel
-
-                selectedVariable={
-                    selectedVariable
-                }
-
-                onVariableChange={
-                    handleVariableChange
-                }
-
-                layerLoading={
-                    layerLoading
-                }
-
-            />
-
-
-            {/* =================================================
-                MAIN CONTENT
-            ================================================= */}
-
-            <main className="main-content">
-
-
-                {/* =================================================
-                    CESIUM GLOBE
-                ================================================= */}
-
-                <CesiumGlobe
-
-                    viewport={
-                        viewport
-                    }
-
-                    onGlobeClick={
-                        handleGlobeClick
-                    }
-
-                    selectedVariable={
-                        selectedVariable
-                    }
-
-                    selectedLocation={
-                        selectedLocation
-                    }
-
-                    layerDataByVariable={
-                        layerDataByVariable
-                    }
-
-                    trackingShips={
-                        trackingShips
-                    }
-
-                />
-
-
-                {/* =================================================
-                    LOCATION / POINT INFORMATION
-                ================================================= */}
-
-                <LocationPanel
-
-                    selectedLocation={
-                        selectedLocation
-                    }
-
-                    oceanData={
-                        oceanData
-                    }
-
-                    message={
-                        message
-                    }
-
-                    loading={
-                        loading
-                    }
-
-                />
-
-            </main>
-
-
-            {/* =================================================
-                STATUS BAR
-            ================================================= */}
-
-            <footer className="status-bar">
-
-                <div>
-
-                    <span className="status-dot"></span>
-
-                    POSTGIS DATABASE CONNECTED
-
-                </div>
-
-
-                <div>
-
-                    OCEAN MODEL DATA ·
-                    138,240 POINTS
-
-                </div>
-
-
-                <div>
-
-                    OCEAN-X v0.1
-
-                </div>
-
-            </footer>
-
-
-            {/* =================================================
-                DATASET UPLOAD MODAL
-            ================================================= */}
-
-            <DataUploadModal
-
-                isOpen={
-                    showDatasetModal
-                }
-
-                onClose={() =>
-                    setShowDatasetModal(false)
-                }
-
-            />
-
-        </div>
+        <ExploreScreen
+            onOpenResearchWorkspace={(page = "analysis") => {
+                setWorkspacePage(page);
+                setShowDepthAnalysis(false);
+                setShowGlobe(false);
+            }}
+            onOpenDepthAnalysis={() => {
+                setShowDepthAnalysis(true);
+                setShowGlobe(false);
+            }}
+        />
     );
 }
 

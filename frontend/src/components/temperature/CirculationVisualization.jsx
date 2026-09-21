@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from "react";
 
 const CirculationVisualization = () => {
   const canvasRef = useRef(null);
@@ -111,7 +111,6 @@ const CirculationVisualization = () => {
 
         // Upper circulation (surface, moving right to left)
         if (i < particleCount / 2) {
-          const particleI = i;
           const x = padding + graphWidth - 40 - progress * (graphWidth - 60) + Math.sin(timeRef.current * 2 + i) * 8;
           const y = padding + graphHeight * 0.15 + Math.sin(progress * Math.PI) * 20;
 
@@ -121,7 +120,6 @@ const CirculationVisualization = () => {
           ctx.fill();
         } else {
           // Lower circulation (deep, moving left to right)
-          const particleI = i - particleCount / 2;
           const x = padding + 40 + progress * (graphWidth - 60) + Math.sin(timeRef.current * 2 + i) * 8;
           const y = padding + graphHeight * 0.6 + Math.sin(progress * Math.PI) * 30;
 

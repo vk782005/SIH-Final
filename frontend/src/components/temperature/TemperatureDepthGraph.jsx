@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from "react";
 
 const TemperatureDepthGraph = ({
   selectedDepth,
@@ -191,11 +191,9 @@ const TemperatureDepthGraph = ({
     if (!canvas) return;
 
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
     const padding = 60;
-    const graphWidth = canvas.offsetWidth - padding * 2;
     const graphHeight = canvas.offsetHeight - padding * 2;
     const maxDepth = 4000;
 

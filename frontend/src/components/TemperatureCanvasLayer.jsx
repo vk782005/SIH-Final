@@ -27,19 +27,19 @@ function smoothstep(t) {
     return t * t * (3 - 2 * t);
 }
 
-function interpolateColor(normalized) {
+function interpolateColor(normalized, stops) {
     const t = clamp(normalized, 0, 1);
 
     for (
         let i = 0;
-        i < TEMPERATURE_COLORS.length - 1;
+        i < stops.length - 1;
         i++
     ) {
         const [stopA, colorA] =
-            TEMPERATURE_COLORS[i];
+            stops[i];
 
         const [stopB, colorB] =
-            TEMPERATURE_COLORS[i + 1];
+            stops[i + 1];
 
         if (t >= stopA && t <= stopB) {
             const localT =
@@ -65,8 +65,8 @@ function interpolateColor(normalized) {
         }
     }
 
-    return TEMPERATURE_COLORS[
-        TEMPERATURE_COLORS.length - 1
+    return stops[
+        stops.length - 1
     ][1];
 }
 
@@ -75,15 +75,28 @@ function interpolateColor(normalized) {
 // Build temperature canvas
 // ============================================================
 
-function buildTemperatureCanvas(raster) {
+function buildTemperatureCanvas(raster, palette, domain) {
+    const stops = Array.isArray(palette) && palette.length > 1
+        ? palette
+        : TEMPERATURE_COLORS;
+
     const width = Number(raster.width);
     const height = Number(raster.height);
 
     const values = raster.values;
     const oceanMask = raster.oceanMask;
 
-    const min = Number(raster.min);
-    const max = Number(raster.max);
+    // A domain supplied by the Colour panel overrides the raster's own
+    // range. This changes the colour mapping only; the values the
+    // backend returned are never touched.
+    const hasDomain =
+        domain &&
+        Number.isFinite(Number(domain.min)) &&
+        Number.isFinite(Number(domain.max)) &&
+        Number(domain.max) > Number(domain.min);
+
+    const min = hasDomain ? Number(domain.min) : Number(raster.min);
+    const max = hasDomain ? Number(domain.max) : Number(raster.max);
 
     if (
         !Number.isFinite(width) ||
@@ -353,7 +366,8 @@ function buildTemperatureCanvas(raster) {
 
             let [r, g, b] =
                 interpolateColor(
-                    normalized
+                    normalized,
+                    stops
                 );
 
             // ------------------------------------------------
@@ -435,6 +449,8 @@ function buildTemperatureCanvas(raster) {
 export default function TemperatureCanvasLayer({
     viewer,
     raster,
+    palette,
+    domain,
     visible = true,
     opacity = 0.82,
 }) {
@@ -470,7 +486,6 @@ export default function TemperatureCanvasLayer({
         // ----------------------------------------------------
 
         if (
-            !visible ||
             !raster
         ) {
             viewer.scene.requestRender();
@@ -483,7 +498,9 @@ export default function TemperatureCanvasLayer({
 
         const canvas =
             buildTemperatureCanvas(
-                raster
+                raster,
+                palette,
+                domain
             );
 
         if (!canvas) {
@@ -586,6 +603,14 @@ export default function TemperatureCanvasLayer({
         // Futuristic appearance
         // ----------------------------------------------------
 
+        /*
+         * Seed visibility and alpha from the current props. Both are then
+         * maintained by the cheap effects below, so a fade never rebuilds
+         * the canvas.
+         */
+
+        imageryLayer.show = visible;
+
         imageryLayer.alpha =
             clamp(
                 Number(opacity),
@@ -651,12 +676,53 @@ export default function TemperatureCanvasLayer({
 
             viewer.scene.requestRender();
         };
+        /*
+         * visible and opacity are read above but deliberately excluded from
+         * the dependency list: rebuilding a multi-megabyte canvas on every
+         * frame of a cross-fade would be ruinous. They are applied by the
+         * two effects below instead.
+         */
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         viewer,
         raster,
-        visible,
-        opacity,
+        palette,
+        domain,
     ]);
+
+    // ========================================================
+    // VISIBILITY - cheap flag flip, no rebuild.
+    // ========================================================
+
+    useEffect(() => {
+        if (!viewer || viewer.isDestroyed()) {
+            return;
+        }
+
+        if (imageryLayerRef.current) {
+            imageryLayerRef.current.show = visible;
+        }
+
+        viewer.scene.requestRender();
+    }, [visible, viewer]);
+
+    // ========================================================
+    // OPACITY - cheap alpha update, no rebuild. This is what
+    // makes the cross-fade between layers possible.
+    // ========================================================
+
+    useEffect(() => {
+        if (!viewer || viewer.isDestroyed()) {
+            return;
+        }
+
+        if (imageryLayerRef.current) {
+            imageryLayerRef.current.alpha = clamp(Number(opacity), 0, 1);
+        }
+
+        viewer.scene.requestRender();
+    }, [opacity, viewer]);
 
     return null;
 }

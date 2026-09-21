@@ -1,4 +1,3 @@
-import React from 'react';
 
 const DepthCurrentExplorer = ({ depth, onDepthChange }) => {
   const depthKm = depth / 1000;

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import "./SalinityPage.css";
 
 import SalinityHero from "../components/salinity/SalinityHero";

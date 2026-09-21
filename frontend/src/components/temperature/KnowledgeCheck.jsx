@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
 const KnowledgeCheck = ({ score, onScoreChange, answered, onAnsweredChange }) => {
   const [answeredQuestions, setAnsweredQuestions] = useState({});
@@ -78,7 +78,7 @@ const KnowledgeCheck = ({ score, onScoreChange, answered, onAnsweredChange }) =>
     onAnsweredChange(answered + 1);
   };
 
-  const isQuestionAnswered = (questionId) => answeredQuestions.hasOwnProperty(questionId);
+  const isQuestionAnswered = (questionId) => Object.prototype.hasOwnProperty.call(answeredQuestions, questionId);
   const getSelectedOption = (questionId) => answeredQuestions[questionId];
 
   const progressPercent = (answered / questions.length) * 100;

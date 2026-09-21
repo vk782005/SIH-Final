@@ -1339,13 +1339,6 @@ export default function SeaHeightTerrainLayer({
             meanSSH: processed.stats.meanSSH,
         });
 
-        console.log("Geometry:", {
-            positions: positions.length,
-            vertices: positions.length / 3,
-            indices: indices.length,
-            triangles: triangleCount,
-        });
-
         console.log("========================================");
 
         if (indices.length === 0) {

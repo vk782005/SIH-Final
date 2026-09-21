@@ -1,0 +1,49 @@
+.overview-page { max-width: 1450px; margin: 0 auto; }
+.page-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 25px; }
+.eyebrow, .panel-header p { margin: 0 0 8px; color: #48b9df; font-size: 8px; letter-spacing: 2px; }
+.page-heading h1 { margin: 0; font-size: 28px; letter-spacing: -0.5px; }
+.page-heading > div > p:last-child { margin: 10px 0 0; color: #668997; font-size: 10px; }
+.heading-actions { display: flex; gap: 8px; }
+.secondary-button, .primary-button, .explorer-shortcut { height: 36px; padding: 0 14px; border-radius: 7px; cursor: pointer; font-size: 9px; }
+.secondary-button { border: 1px solid #234354; background: #091a25; color: #9ab3bd; }
+.primary-button { border: 1px solid #31718a; background: #0d2734; color: #dff4fa; }
+.system-banner { height: 38px; border: 1px solid #1d4050; border-radius: 7px; display: flex; align-items: center; gap: 8px; padding: 0 12px; margin-bottom: 12px; background: #091a24; font-size: 8px; letter-spacing: 1.2px; }
+.system-banner > span:last-child { margin-left: auto; color: #5e8290; letter-spacing: 0; }
+.status-indicator { width: 6px; height: 6px; border-radius: 50%; background: #58d4a6; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.stat-card, .panel { border: 1px solid #1a3948; background: #091a25; border-radius: 8px; }
+.stat-card { min-height: 105px; padding: 17px; display: flex; flex-direction: column; }
+.stat-card span { color: #598395; font-size: 7px; letter-spacing: 1.7px; }
+.stat-card strong { margin-top: 20px; font-size: 27px; }
+.stat-card small { margin-top: 7px; color: #4f7584; font-size: 8px; }
+.overview-grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 10px; margin-top: 10px; }
+.overview-grid.lower { grid-template-columns: 1fr 1fr; }
+.panel { overflow: hidden; }
+.panel-header { min-height: 66px; padding: 14px 16px; border-bottom: 1px solid #193441; display: flex; justify-content: space-between; align-items: center; }
+.panel-header h2 { margin: 0; font-size: 12px; }
+.panel-header button { border: 0; background: transparent; color: #4aaecb; font-size: 8px; cursor: pointer; }
+.investigation-list, .activity-list, .task-preview { padding: 0 16px; }
+.investigation-row { min-height: 70px; display: grid; grid-template-columns: 1.25fr 1fr 55px; align-items: center; gap: 20px; border-bottom: 1px solid #15303d; }
+.investigation-name { display: flex; align-items: center; gap: 10px; }
+.row-dot { width: 7px; height: 7px; border: 1px solid #43c6ed; border-radius: 50%; }
+.investigation-name strong, .investigation-name small, .activity-row strong, .activity-row small { display: block; }
+.investigation-name strong, .activity-row strong { font-size: 9px; }
+.investigation-name small, .investigation-row > small, .activity-row small { margin-top: 4px; color: #557987; font-size: 7px; }
+.progress-area { display: flex; align-items: center; gap: 9px; }
+.progress-track { flex: 1; height: 3px; background: #183541; }
+.progress-track div { height: 100%; background: #46c6e9; }
+.progress-area span { width: 26px; color: #7096a5; font-size: 7px; }
+.activity-row { min-height: 65px; display: grid; grid-template-columns: 30px 1fr auto; align-items: center; gap: 9px; border-bottom: 1px solid #15303d; }
+.activity-icon { width: 28px; height: 28px; border: 1px solid #1d4050; border-radius: 6px; display: grid; place-items: center; color: #59bbd7; }
+.activity-row time { color: #4e7482; font-size: 7px; }
+.empty-research-state { padding: 22px; display: flex; gap: 18px; align-items: center; }
+.empty-research-state > span { font-size: 36px; }
+.empty-research-state strong { font-size: 10px; }
+.empty-research-state p { color: #607f8c; font-size: 8px; line-height: 1.5; }
+.task-preview { padding-bottom: 8px; }
+.task-preview > div { min-height: 44px; border-bottom: 1px solid #15303d; display: flex; align-items: center; gap: 10px; }
+.task-preview strong { font-size: 9px; font-weight: 500; }
+.task-check { color: #55c1df; }
+.explorer-shortcut { margin-top: 14px; border: 1px solid #28617a; background: #0b2230; color: #bfeaf5; }
+@media (max-width: 1000px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .overview-grid, .overview-grid.lower { grid-template-columns: 1fr; } }
+@media (max-width: 650px) { .page-heading { align-items: flex-start; flex-direction: column; } .stats-grid { grid-template-columns: 1fr; } }

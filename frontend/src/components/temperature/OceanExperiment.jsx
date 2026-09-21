@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import { useRef, useEffect, useMemo } from "react";
 
 const OceanExperiment = ({
   surfaceTemp,
@@ -14,7 +14,6 @@ const OceanExperiment = ({
 
   // Calculate derived metrics
   const tempDifference = surfaceTemp - deepTemp;
-  const mixingIndicator = windMixing * 100;
   const stratification = tempDifference > 15 ? 'Strong' : tempDifference > 8 ? 'Moderate' : 'Weak';
 
   // Generate explanation of changes

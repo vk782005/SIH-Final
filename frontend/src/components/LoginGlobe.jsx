@@ -44,9 +44,9 @@ function LoginGlobe() {
         viewer.camera.setView({
             destination:
                 Cesium.Cartesian3.fromDegrees(
-                    70,
-                    20,
-                    18000000
+                    79,
+                    23,
+                    12000000
                 ),
         });
 

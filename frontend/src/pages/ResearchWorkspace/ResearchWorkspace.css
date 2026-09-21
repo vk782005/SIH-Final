@@ -1,0 +1,60 @@
+.research-workspace {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #061019;
+}
+
+.research-main {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.research-content {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 28px 30px 36px;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #23414f transparent;
+}
+
+.research-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.research-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.research-content::-webkit-scrollbar-thumb {
+  background: #203d4a;
+  border-radius: 999px;
+}
+
+.research-content::-webkit-scrollbar-thumb:hover {
+  background: #2b5362;
+}
+
+@media (max-width: 1000px) {
+  .research-content {
+    padding: 22px 20px 30px;
+  }
+}
+
+@media (max-width: 650px) {
+  .research-content {
+    padding: 18px 14px 24px;
+  }
+}

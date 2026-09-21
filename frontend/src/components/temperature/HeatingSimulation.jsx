@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useMemo } from "react";
 
 const HeatingSimulation = ({
   solarEnergy,
@@ -9,24 +9,15 @@ const HeatingSimulation = ({
   onSimulationTimeChange,
 }) => {
   const canvasRef = useRef(null);
-  const [temperatureProfile, setTemperatureProfile] = useState({
-    surface: 20,
-    mid: 15,
-    deep: 5,
-  });
-
-  // Simulate heating based on parameters
-  useEffect(() => {
-    const newSurface = 15 + solarEnergy * 15;
+  // Derived directly from the simulation controls; keeping this as a memo
+  // avoids an extra render every time the user moves a slider.
+  const temperatureProfile = useMemo(() => {
+    const surface = 15 + solarEnergy * 15;
     const depthOfMixing = 50 + windMixing * 150;
-    const newMid = newSurface - (depthOfMixing / 200) * (newSurface - 5);
-    const newDeep = 5 + solarEnergy * 2;
+    const mid = surface - (depthOfMixing / 200) * (surface - 5);
+    const deep = 5 + solarEnergy * 2;
 
-    setTemperatureProfile({
-      surface: newSurface,
-      mid: newMid,
-      deep: newDeep,
-    });
+    return { surface, mid, deep };
   }, [solarEnergy, windMixing]);
 
   useEffect(() => {

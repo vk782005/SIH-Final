@@ -1,4 +1,3 @@
-import React from 'react';
 
 const GyreExplorer = ({ selectedLatitude }) => {
   const hemisphere = selectedLatitude >= 0 ? 'Northern' : 'Southern';

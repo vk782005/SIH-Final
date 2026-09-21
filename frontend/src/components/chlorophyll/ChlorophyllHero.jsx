@@ -1,4 +1,3 @@
-import React from "react";
 
 const ChlorophyllHero = ({ onLaunchGlobe }) => (
   <section className="chl-panel chl-hero">

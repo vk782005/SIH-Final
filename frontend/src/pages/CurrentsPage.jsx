@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from "react";
 import './CurrentsPage.css';
 
 import CurrentsHero from '../components/currents/CurrentsHero';

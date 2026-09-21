@@ -1,4 +1,3 @@
-import React from "react";
 
 const takeaways = [
   ["Chlorophyll is a pigment", "It is used by photosynthetic organisms to capture light energy."],

@@ -1,4 +1,3 @@
-import React from 'react';
 import './CurrentsHero.css';
 
 const CurrentsHero = ({ onLaunchGlobe }) => {

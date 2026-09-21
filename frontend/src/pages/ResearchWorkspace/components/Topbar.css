@@ -1,0 +1,140 @@
+.research-topbar {
+  height: 78px;
+  border-bottom: 1px solid #18303d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  gap: 20px;
+  background: #07141e;
+}
+
+.topbar-location {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 8px;
+  letter-spacing: 1.8px;
+}
+
+.topbar-location span {
+  color: #598193;
+}
+
+.topbar-location b {
+  color: #315666;
+}
+
+.topbar-location strong {
+  color: #84a6b4;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.global-search {
+  width: min(390px, 40vw);
+  height: 38px;
+  border: 1px solid #1d3948;
+  border-radius: 7px;
+  background: #091a25;
+  color: #658796;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 11px;
+  cursor: pointer;
+  font-size: 9px;
+  text-align: left;
+}
+
+.global-search span:nth-child(2) {
+  flex: 1;
+}
+
+.global-search kbd {
+  font-size: 8px;
+  border: 1px solid #234352;
+  padding: 3px 5px;
+  border-radius: 4px;
+}
+
+.topbar-icon,
+.topbar-user {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #1d3b4b;
+  border-radius: 7px;
+  background: #091a25;
+  color: #70b5ca;
+  cursor: pointer;
+}
+
+.topbar-user {
+  border-radius: 50%;
+  font-size: 9px;
+}
+
+.topbar-user-copy strong,
+.topbar-user-copy span {
+  display: block;
+}
+
+.topbar-user-copy strong {
+  font-size: 9px;
+}
+
+.topbar-user-copy span {
+  margin-top: 3px;
+  color: #5e8391;
+  font-size: 8px;
+}
+
+@media (max-width: 900px) {
+  .topbar-user-copy {
+    display: none;
+  }
+
+  .global-search {
+    width: 250px;
+  }
+}
+
+/* Final workspace polish */
+.research-topbar {
+  box-shadow: 0 1px 0 rgba(255,255,255,.015);
+}
+
+.global-search {
+  transition: border-color 150ms ease, background 150ms ease, box-shadow 150ms ease, color 150ms ease;
+}
+
+.global-search:hover,
+.global-search:focus-visible {
+  border-color: #2c5666;
+  background: #0b1d27;
+  color: #91b5c0;
+}
+
+.global-search:focus-visible,
+.topbar-icon:focus-visible,
+.topbar-user:focus-visible {
+  outline: 2px solid #85e1f4;
+  outline-offset: 2px;
+}
+
+.topbar-icon,
+.topbar-user {
+  transition: border-color 150ms ease, background 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.topbar-icon:hover,
+.topbar-user:hover {
+  border-color: #31586a;
+  background: #0d202a;
+  color: #a7d8e5;
+  transform: translateY(-1px);
+}
